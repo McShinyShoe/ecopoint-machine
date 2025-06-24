@@ -47,16 +47,17 @@ public class ConfirmActivity extends AppCompatActivity {
         }
 
         yesBtn.setOnClickListener(v -> {
-            Log.d("API", "PARSING SAMPAH: ");
-            String sampahId1 = APIController.getSampahId(APIController.postSampah("kaca", "420", 69));
-            String sampahId2 = APIController.getSampahId(APIController.postSampah("plastik", "9", 10));
-            Log.d("API", "SAMPAH 1: " + sampahId1);
-            Log.d("API", "SAMPAH 2: " + sampahId2);
-            APIController.ensureRegistered("MachineA");
-            String machineID = APIController.getMesinIdByName("MachineA");
-            Log.d("API", "MACHINE ID: " + machineID);
-            String[] sampahList = {sampahId1, sampahId2};
-            String code = APIController.getKodeVerifikasi(APIController.postPermintaan(machineID, sampahList));
+//            Log.d("API", "PARSING SAMPAH: ");
+//            String sampahId1 = APIController.getSampahId(APIController.postSampah("kaca", "420", 69));
+//            String sampahId2 = APIController.getSampahId(APIController.postSampah("plastik", "9", 10));
+//            Log.d("API", "SAMPAH 1: " + sampahId1);
+//            Log.d("API", "SAMPAH 2: " + sampahId2);
+//            APIController.ensureRegistered("MachineA");
+//            String machineID = APIController.getMesinIdByName("MachineA");
+//            Log.d("API", "MACHINE ID: " + machineID);
+//            String[] sampahList = {sampahId1, sampahId2};
+//            String code = APIController.getKodeVerifikasi(APIController.postPermintaan(machineID, sampahList));
+            String code = "87142";
             Log.d("API", "CODE: " + code);
             Intent intent = new Intent(ConfirmActivity.this, ResultActivity.class);
             intent.putExtra("CODE", code);
