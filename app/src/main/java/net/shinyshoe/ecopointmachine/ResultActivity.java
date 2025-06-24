@@ -67,7 +67,7 @@ public class ResultActivity extends AppCompatActivity {
 
         codeTextView.setText(getString(R.string.result_code_replacement, code));
 
-        generateQrCode("https://ecopoint.kevin-andreas.com/scan-qr/" + code + "/");
+        generateQrCode("https://ecopoint.kevin-andreas.com/scan-qr?code=" + code);
 
         backButton.setOnClickListener(v -> {
             Animation fadeShrink = AnimationUtils.loadAnimation(ResultActivity.this, R.anim.fade_shrink);
