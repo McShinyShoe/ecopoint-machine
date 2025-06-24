@@ -14,9 +14,10 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class APIController {
+    public static String BACKEND_URL = "https://ecopoint-backend-production.up.railway.app";
 
     public static String postSampah(String kategoriSampah, String beratSampah, int poin) {
-        String urlString = "https://ecopointbackend.shinyshoe.net/api/sampah";
+        String urlString = BACKEND_URL + "/api/sampah";
         String response = "";
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -68,7 +69,7 @@ public class APIController {
         return response;
     }
     public static String getMesin() {
-        String urlString = "https://ecopointbackend.shinyshoe.net/api/mesin";
+        String urlString = BACKEND_URL + "/api/mesin";
         String response = "";
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
@@ -157,7 +158,7 @@ public class APIController {
     }
 
     public static String postMesin(String namaMesin) {
-        String urlString = "https://ecopointbackend.shinyshoe.net/api/mesin";
+        String urlString = BACKEND_URL + "/api/mesin";
         String response = "";
 
         // For testing only — don't use on main thread in production!
@@ -207,7 +208,7 @@ public class APIController {
         return response;
     }
     public static String postPermintaan(String mesinId, String[] daftarSampah) {
-        String urlString = "https://ecopointbackend.shinyshoe.net/api/permintaan";
+        String urlString = BACKEND_URL + "/api/permintaan";
         String response = "";
 
         // Allow network call on main thread for testing (not recommended for production)
