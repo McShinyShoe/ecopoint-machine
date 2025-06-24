@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">EcoPointMachine</string>
+    <string name="confirm_question">Are you sure?</string>
+    <string name="confirm_yes">Yes</string>
+    <string name="confirm_no">No</string>
+    <string name="confirm_image_preview_description">Captured Image Preview</string>
+    <string name="result_back">Back</string>
+    <string name="result_code_text">Code:</string>
+    <string name="result_code_replacement">Code: %1$s</string>
+</resources>
