@@ -9,7 +9,10 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
@@ -27,6 +30,7 @@ public class ConfirmActivity extends AppCompatActivity {
     Button yesBtn, noBtn;
     ImageView photoPreview;
     String imagePath;
+    FrameLayout frameLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +66,7 @@ public class ConfirmActivity extends AppCompatActivity {
         yesBtn = findViewById(R.id.yes_btn);
         noBtn = findViewById(R.id.no_btn);
         photoPreview = findViewById(R.id.image_preview);
+        frameLayout = findViewById(R.id.frame_image_preview);
 
         imagePath = getIntent().getStringExtra("imageUri");
         if (imagePath != null) {
@@ -83,11 +88,79 @@ public class ConfirmActivity extends AppCompatActivity {
 //            String code = APIController.getKodeVerifikasi(APIController.postPermintaan(machineID, sampahList));
             String code = "87142";
             Log.d("API", "CODE: " + code);
-            Intent intent = new Intent(ConfirmActivity.this, ResultActivity.class);
-            intent.putExtra("CODE", code);
-            startActivity(intent);
+
+            Animation fadeShrink = AnimationUtils.loadAnimation(ConfirmActivity.this, R.anim.fade_shrink);
+            frameLayout.startAnimation(fadeShrink);
+            yesBtn.startAnimation(fadeShrink);
+            noBtn.startAnimation(fadeShrink);
+
+            fadeShrink.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    // Optional: hide the FrameLayout
+                    frameLayout.setVisibility(View.INVISIBLE);
+                    yesBtn.setVisibility(View.INVISIBLE);
+                    noBtn.setVisibility(View.INVISIBLE);
+
+                    Intent intent = new Intent(ConfirmActivity.this, ResultActivity.class);
+                    intent.putExtra("CODE", code);
+                    startActivity(intent);
+
+                    // Optional: remove default transition
+                    overridePendingTransition(0, 0);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
         });
 
-        noBtn.setOnClickListener(v -> finish());
+
+
+
+
+
+        noBtn.setOnClickListener(v -> {
+            Animation fadeShrink = AnimationUtils.loadAnimation(ConfirmActivity.this, R.anim.fade_shrink);
+            frameLayout.startAnimation(fadeShrink);
+            yesBtn.startAnimation(fadeShrink);
+            noBtn.startAnimation(fadeShrink);
+
+            fadeShrink.setAnimationListener(new Animation.AnimationListener() {
+                @Override
+                public void onAnimationStart(Animation animation) {}
+
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    // Optional: hide the FrameLayout
+                    frameLayout.setVisibility(View.INVISIBLE);
+                    yesBtn.setVisibility(View.INVISIBLE);
+                    noBtn.setVisibility(View.INVISIBLE);
+
+                    finish();
+
+                    // Optional: remove default transition
+                    overridePendingTransition(0, 0);
+                }
+
+                @Override
+                public void onAnimationRepeat(Animation animation) {}
+            });
+        });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        frameLayout.setVisibility(View.VISIBLE);
+        yesBtn.setVisibility(View.VISIBLE);
+        noBtn.setVisibility(View.VISIBLE);
+        Animation growFade = AnimationUtils.loadAnimation(this, R.anim.fade_grow);
+        frameLayout.startAnimation(growFade);
+        yesBtn.startAnimation(growFade);
+        noBtn.startAnimation(growFade);
     }
 }

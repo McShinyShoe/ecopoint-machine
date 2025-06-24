@@ -7,7 +7,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.Toast;
 import android.view.WindowManager;
@@ -43,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     private PreviewView previewView;
     private ImageButton goToConfirmBtn;
     private ImageCapture imageCapture;
+    FrameLayout frameLayout;
 
 
     @Override
@@ -78,6 +81,7 @@ public class MainActivity extends AppCompatActivity {
 
         previewView = findViewById(R.id.previewView);
         goToConfirmBtn = findViewById(R.id.go_to_confirm_btn);
+        frameLayout = findViewById(R.id.frameLayout);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
@@ -90,6 +94,17 @@ public class MainActivity extends AppCompatActivity {
 
         goToConfirmBtn.setOnClickListener(v -> takePhoto());
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        frameLayout.setVisibility(View.VISIBLE);
+        goToConfirmBtn.setVisibility(View.VISIBLE);
+        Animation growFade = AnimationUtils.loadAnimation(this, R.anim.grow_fade);
+        Animation fadeGrow = AnimationUtils.loadAnimation(this, R.anim.fade_grow);
+        frameLayout.startAnimation(growFade);
+        goToConfirmBtn.startAnimation(fadeGrow);
     }
 
     @Override
@@ -146,10 +161,35 @@ public class MainActivity extends AppCompatActivity {
                 new ImageCapture.OnImageSavedCallback() {
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
-                        Uri savedUri = Uri.fromFile(photoFile);
-                        Intent intent = new Intent(MainActivity.this, ConfirmActivity.class);
-                        intent.putExtra("imageUri", savedUri.toString());
-                        startActivity(intent);
+                        Animation shrinkFade = AnimationUtils.loadAnimation(MainActivity.this, R.anim.shrink_fade);
+                        Animation fadeShrink = AnimationUtils.loadAnimation(MainActivity.this, R.anim.fade_shrink);
+                        frameLayout.startAnimation(shrinkFade);
+                        goToConfirmBtn.startAnimation(fadeShrink);
+
+                        shrinkFade.setAnimationListener(new Animation.AnimationListener() {
+                            @Override
+                            public void onAnimationStart(Animation animation) {}
+
+                            @Override
+                            public void onAnimationEnd(Animation animation) {
+                                // Optional: hide the FrameLayout
+                                frameLayout.setVisibility(View.INVISIBLE);
+                                goToConfirmBtn.setVisibility(View.INVISIBLE);
+
+                                // Start next activity
+
+                                Uri savedUri = Uri.fromFile(photoFile);
+                                Intent intent = new Intent(MainActivity.this, ConfirmActivity.class);
+                                intent.putExtra("imageUri", savedUri.toString());
+                                startActivity(intent);
+
+                                // Optional: remove default transition
+                                overridePendingTransition(0, 0);
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animation animation) {}
+                        });
                     }
 
                     @Override
